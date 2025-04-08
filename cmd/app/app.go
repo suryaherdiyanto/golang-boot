@@ -8,8 +8,8 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/gorilla/sessions"
 	"github.com/petaki/inertia-go"
-	webmiddleware "github.com/suryaherdiyanto/kaspro/web/middleware"
-	"github.com/suryaherdiyanto/kaspro/web/response"
+	webmiddleware "github.com/suryaherdiyanto/golang-boot/web/middleware"
+	"github.com/suryaherdiyanto/golang-boot/web/response"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module github.com/suryaherdiyanto/kaspro
+module github.com/suryaherdiyanto/golang-boot
 
 go 1.23.8
 
