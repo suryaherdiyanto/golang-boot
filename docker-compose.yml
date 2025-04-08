@@ -1,0 +1,30 @@
+services:
+  app:
+    build: .
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    restart: unless-stopped
+    depends_on:
+      - db
+    volumes:
+      - ./:/app
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      APP_PORT: ${APP_PORT}
+      APP_KEY: ${APP_KEY}
+    networks:
+      - app
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    restart: unless-stopped
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    networks:
+      - app
+networks:
+  app:
+    driver: bridge

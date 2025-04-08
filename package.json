@@ -1,0 +1,35 @@
+{
+  "name": "kaspro",
+  "version": "1.0.0",
+  "description": "A accounting software",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx vite build --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suryaherdiyanto/kaspro.git"
+  },
+  "keywords": [
+    "saas",
+    "accounting",
+    "software"
+  ],
+  "author": "surya herdiyanto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/suryaherdiyanto/kaspro/issues"
+  },
+  "homepage": "https://github.com/suryaherdiyanto/kaspro#readme",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.3",
+    "vite": "^6.2.5",
+    "vue": "^3.5.13"
+  },
+  "dependencies": {
+    "@inertiajs/vue3": "^2.0.6",
+    "dotenv": "^16.4.7"
+  }
+}
