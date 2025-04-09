@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"slices"
 
-	"github.com/suryaherdiyanto/golang-boot/web/response"
+	"github.com/suryaherdiyanto/kaspro/web/response"
 )
 
 func ValidateCSRF(next http.Handler) http.Handler {
