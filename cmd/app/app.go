@@ -8,8 +8,10 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/gorilla/sessions"
 	"github.com/petaki/inertia-go"
-	webmiddleware "github.com/suryaherdiyanto/golang-boot/web/middleware"
-	"github.com/suryaherdiyanto/golang-boot/web/response"
+	"github.com/suryaherdiyanto/kaspro/web/handler"
+	webmiddleware "github.com/suryaherdiyanto/kaspro/web/middleware"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -19,6 +21,11 @@ func main() {
 		Handler: mux,
 	}
 	store := sessions.NewCookieStore([]byte(os.Getenv("APP_KEY")))
+	db, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_URL")), &gorm.Config{})
+
+	if err != nil {
+		panic(err.Error())
+	}
 
 	fs := http.FileServer(http.Dir("./public"))
 	jsResources := http.FileServer(http.Dir("./resources/js/"))
@@ -30,24 +37,13 @@ func main() {
 
 	inertiaManager := inertia.New("http://localhost:3000", "./resources/tmpl/app.go.html", os.Getenv("INERTIA_VERSION"))
 
-	mux.Use(middleware.Logger)
-	mux.Use(webmiddleware.NewSession(store))
-	mux.Use(webmiddleware.ValidateCSRF)
-	mux.Use(inertiaManager.Middleware)
+	handler := handler.New(inertiaManager, db)
+	mux.Use(middleware.Logger, webmiddleware.NewSession(store), webmiddleware.ValidateCSRF, inertiaManager.Middleware)
 
 	mux.Handle("/asset/*", http.StripPrefix("/asset/", fs))
 	mux.Handle("/js/*", http.StripPrefix("/js/", jsResources))
 
-	mux.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		err := inertiaManager.Render(w, r, "Index", response.D{
-			"foo": "bar",
-		})
-
-		if err != nil {
-			w.WriteHeader(500)
-			w.Write([]byte(err.Error()))
-		}
-	})
+	mux.Get("/", handler.Home)
 
 	if err := server.ListenAndServe(); err != nil {
 		panic(err)
